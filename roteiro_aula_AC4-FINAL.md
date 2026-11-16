@@ -73,7 +73,7 @@ Rode python dog_ia_v2.py --benchmark 20 --seed 1 e depois com --seed 7. Responda
  3- Proponha uma melhoria concreta (por exemplo, margem de segurança maior, outro filtro ou outro custo no A*) e diga qual métrica você esperaria que melhorasse e qual poderia piorar.
 
  
- *ETAPA BÔNUS - VALOR EXTRA DE MEIO PONTO PARA A PROVA SEMESTRAL.*
+### ETAPA BÔNUS - VALOR EXTRA DE MEIO PONTO PARA A PROVA SEMESTRAL.*
 
 1 - Grave um vídeo com a execução do seu código com o DOG-IA fazendo o percurso completo ida e volta. (deve durar entre 20 a 40 segundos)
 

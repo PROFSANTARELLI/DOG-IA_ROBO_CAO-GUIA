@@ -1,15 +1,12 @@
-# Guia Completo da Aula: Engenharia de Robôs Autônomos com DOG-IA (V1 $\rightarrow$ V2)
+*AULA - AC-4 ENTREGA FINAL
+
+#PROJETO DOG-IA
 
 ## 1. Visão Geral da Aula
-* **Tema:** Navegação Autônoma Híbrida, Sensoriamento Ruidoso, Segurança Preditiva e Controle de Robôs Assistivos.
-* **Ponto de Partida:** Código base funcional **DOG-IA V1** (navegação puramente reativa em calçada estática).
-* **Objetivo Final:** Os alunos devem evoluir a arquitetura do código até alcançar os requisitos da **DOG-IA V2** e responder às **5 Questões Técnicas** preparatórias para a avaliação.
+* **Ponto de Partida:** Código base **DOG-IA V1**.
+* **Objetivo Final:** Evoluir a arquitetura do código até alcançar os requisitos da **DOG-IA V2** e responder às **5 Questões Técnicas** preparatórias para a avaliação semestral.
 
----
-
-## 2. Roteiro de Desenvolvimento Prático (Evolução V1 $\rightarrow$ V2)
-
-Divida a turma em equipes. Os alunos recebem o código da **V1** e devem implementar progressivamente os **4 Marcos de Engenharia** abaixo:
+## 2. Roteiro de Desenvolvimento Prático
 
 ### Marco 1 — Ambiente Urbano Dinâmico, Semáforo e Barreira de Meio-Fio
 **Problema da V1:** O robô atravessa a avenida diretamente em direção ao alvo sem respeitar a faixa de pedestres, semáforos ou veículos.

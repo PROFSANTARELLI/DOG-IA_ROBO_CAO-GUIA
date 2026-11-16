@@ -76,7 +76,13 @@ Rode python dog_ia_v2.py --benchmark 20 --seed 1 e depois com --seed 7. Responda
  *ETAPA BÔNUS - VALOR EXTRA DE MEIO PONTO PARA A PROVA SEMESTRAL.*
 
 1 - Grave um vídeo com a execução do seu código com o DOG-IA fazendo o percurso completo ida e volta. (deve durar entre 20 a 40 segundos)
+
 2 - Um dos integrantes do grupo deve fazer uma postagem no Linkedin e marcar todos os colegas e o professor (Flavio Santarelli no linkedin)
+
 3 - No texto deve-se se destacar o objetivo nobre do projeto e a motivação social que eles pensado
+
 4 - Enviar o link por email ao professor (flavio.santarelli@pro.fecaf.com.br) No corpo do email colocar o nome completo de todos os participantes do grupo.
+
 5 - Subir todos os códigos e perguntas para o github do grupo (coloque o link do github no email)
+
+

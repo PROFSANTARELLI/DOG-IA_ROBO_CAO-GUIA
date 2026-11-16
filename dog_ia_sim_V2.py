@@ -1,31 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 DOG-IA v2 — Cão-guia robô (simulação em pygame)
-
-Principais mudanças em relação à v1
------------------------------------
- * Arquitetura HÍBRIDA: planejador deliberativo (A* em grid de ocupação, com
-   custo menor sobre o piso tátil) + camada reativa (LiDAR) + máquina de estados.
- * Máquina de estados: PARADO, SEGUINDO, DESVIANDO, AGUARDANDO_SINAL,
-   ATRAVESSANDO, FREIO_EMERGENCIA, SEM_ROTA, CHEGOU.
- * Freio de emergência independente da zona (inclusive na faixa).
- * Travessia só inicia se o verde de pedestre tiver tempo suficiente; semáforo com
-   fases de segurança (todos vermelhos) antes/depois do verde de pedestre.
- * Tutor (pessoa guiada) modelado como seguidor com guia (leash), com colisão
-   própria; obstáculos suspensos bloqueiam o tutor (cabeça), não o cão.
- * Carros com aceleração/frenagem, distância de seguimento, parada suave na
-   linha de retenção e frenagem para pessoas na pista. Tecla T cria "infrator".
- * LiDAR com ruído gaussiano + falhas esporádicas + filtro de mediana (3 varreduras),
-   raycast analítico (Rect.clipline).
- * Movimento independente do FPS (dt), pedestres NPC, vários destinos (teclas 1-4),
-   modo manual ASSISTIDO (mantém a camada de segurança), áudio estéreo direcional,
-   métricas (tempo, distância, alertas, quase-colisões, colisões, freios).
- * Modo benchmark headless:  python dog_ia_v2.py --benchmark 20 --seed 1
-
-Bugs corrigidos da v1: giro "para longe da rua" dependente do heading, velocidade
-assimétrica dos carros (truncamento de Rect), zonas do LiDAR 6/7/6, timers de áudio
-por tipo, validação de cliques, carro parado na linha bloqueando a travessia.
 """
 
 import argparse
@@ -45,7 +19,7 @@ if "--benchmark" in sys.argv:
 
 import pygame
 
-# ==================== CONFIGURAÇÕES GERAIS ====================
+# CONFIGURAÇÕES GERAIS
 LARGURA, ALTURA = 1050, 680
 FPS = 60
 AREA_MAPA_LARGURA = LARGURA - 260
@@ -100,7 +74,7 @@ ROXO_SUSPENSO = (155, 89, 182)
 AZUL_INFO = (120, 170, 235)
 
 
-# ==================== UTILIDADES ====================
+# UTILIDADES 
 def clamp(v, lo, hi):
     return max(lo, min(hi, v))
 
@@ -176,7 +150,7 @@ class Metricas:
         self.viagens = v
 
 
-# ==================== ÁUDIO ====================
+# ÁUDIO 
 class AudioMudo:
     ativo = False
 

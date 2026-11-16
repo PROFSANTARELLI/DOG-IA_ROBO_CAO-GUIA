@@ -1,5 +1,5 @@
 """
-DOG-IA v2 — Cão-guia robô (simulação em pygame)
+DOG-IA v2 — Cão-guia robô
 """
 
 import argparse

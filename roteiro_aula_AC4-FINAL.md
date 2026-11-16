@@ -16,7 +16,7 @@
   3. Adicionar **veículos infratores** que ignoram o sinal vermelho para testar a segurança ativa do robô.
   4. Implementar uma barreira física (`aplicar_barreira`) que impeça o robô de descer o meio-fio fora da faixa de pedestres ou quando a travessia não estiver autorizada.
 
-### Marco 2 — Arquitetura Híbrida: Planejamento Global (A*) + Evasão Local
+### Marco 2 — Arquitetura Híbrida: Planejamento Global
 **Problema da V1:** A navegação puramente reativa fica presa em mínimos locais (obstáculos em "U") e não otimiza o uso do piso tátil nem múltiplos destinos.
 * **Requisitos Técnicos:**
   1. Discretizar o mapa em uma grade de ocupação (células de $10 \times 10\text{ px}$) e implementar o algoritmo de busca **A\*** com heurística octile/euclidiana.
@@ -38,46 +38,45 @@
   2. Adicionar alertas sonoros sintéticos em **estéreo (`pan` $-1$ a $+1$)** para indicar auditivamente o lado do obstáculo.
   3. Registrar métricas da viagem (tempo, distância percorrida, alertas vermelhos, freios de emergência e viagens concluídas) e suporte a execução *headless* (`--benchmark`).
 
----
 
-## 3. Lista Preparatória para a Prova (Versão do Aluno — Sem Gabarito)
+## 3. Questões preparatórias para a Prova semestral
 
-**Instruções:** Responda de forma objetiva e fundamentada nos conceitos de robótica móvel aplicados durante o desenvolvimento do **DOG-IA V2**.
-
-1. **Arquitetura Híbrida de Navegação (Global vs. Local):**
+1. Arquitetura Híbrida de Navegação (Global vs. Local):
    Na Versão 1, o robô utiliza apenas leitura imediata do LiDAR para desviar de obstáculos e apontar para o alvo. Na Versão 2, o sistema combina um planejador **A\*** em grade com a evasão reativa local. Qual limitação crítica da navegação puramente reativa é resolvida por essa arquitetura híbrida e por que o planejador global sozinho também não basta em um ambiente urbano?
 
-2. **Espaço de Configuração (*C-Space*) e Inflação Assimétrica:**
-   Ao construir a malha de navegação do algoritmo A*, os obstáculos sofrem uma inflação antes da busca (`INFL_SOLO = 30 px` e `INFL_SUSPENSO = 38 px`). Explique o conceito de **Espaço de Configuração (*C-Space*)** por trás dessa técnica e justifique tecnicamente por que obstáculos suspensos exigem uma margem maior do que obstáculos no solo.
 
-3. **Filtragem de Ruído em Sensores (Mediana vs. Média Móvel):**
-   Sensores LiDAR reais sofrem com ruído térmico e falhas esporádicas de retorno (*dropouts*, quando o feixe retorna alcance máximo). Por que um **filtro de mediana temporal** sobre as últimas 3 amostras é tecnicamente superior a uma **média móvel simples** para tratar leituras de LiDAR em robôs móveis?
+2. Máquina de estados
+Execute uma viagem completa (1 para Mercado) e observe o campo Estado no painel. Responda:
 
-4. **Segurança Preditiva e Cinemática (Zona Varrida):**
-   Em cruzamentos com veículos em alta velocidade (incluindo infratores que avançam o sinal vermelho), verificar apenas a sobreposição da posição atual do carro com a posição atual do robô é insuficiente. Como o cálculo da **zona varrida (*swept volume*)** resolve esse risco e quais variáveis físicas do veículo são indispensáveis para sua formulação?
+ 1 - Liste, em ordem, os estados por que o robô passou e a condição que causou cada transição.
+ 2 - Qual é a diferença entre AGUARDANDO_SINAL e FREIO_EMERGENCIA?
 
-5. **Máquina de Estados Finitos (FSM) e Prevenção de *Deadlocks*:**
-   A tomada de decisão do robô é estruturada como uma Máquina de Estados Finitos hierárquica (`FREIO_EMERGENCIA` > `ATRAVESSANDO` > `AGUARDANDO_SINAL` > `DESVIANDO` > `SEGUINDO`). Explique:
-   * a) Como o sistema evita ficar preso indefinidamente em oscilação ou *deadlock* no estado `DESVIANDO`;
-   * b) Por que o semáforo exige uma fase intermediária de **todos vermelhos (*All-Red*)** entre o fechamento para os carros e a abertura para os pedestres.
 
----
+3. Percepção e ruído do sensor
+O LiDAR tem ruído gaussiano, falhas esporádicas (2%) e filtro de mediana sobre 3 varreduras. Responda:
 
-## 4. Gabarito Comentado e Critérios de Correção (Versão do Professor)
+ 1 - Por que a mediana é mais adequada que a média para falhas do tipo “leitura = alcance máximo”?
+ 2 - Qual é o custo do filtro em termos de atraso na detecção? Estime-o em segundos, considerando 60 varreduras por segundo.
+ 3 - O que aconteceria se o filtro usasse 15 varreduras em vez de 3?
 
-### Questão 1 — Arquitetura Híbrida de Navegação
-* **Resposta Esperada:** A navegação puramente reativa (V1) sofre com **mínimos locais** (como obstáculos côncavos em formato de "U" ou corredores bloqueados), nos quais o robô oscila ou fica preso por buscar apenas a direção vetorial direta ao destino. O planejador global **A\*** resolve esse problema encontrando o caminho topológico completo ao redor de barreiras conhecidas. Contudo, o A* sozinho não basta porque opera sobre uma representação estática do mapa e não reage em tempo real a **agentes dinâmicos e imprevisíveis** (carros furando o sinal, pedestres ou novos obstáculos inseridos durante a execução), função desempenhada pela camada reativa local.
+4. Segurança temporal na travessia
+A travessia só começa se tempo_restante > (RUA_ALTURA + 24 + GUIA) / velocidade × 1,35 + 0,4. Responda:
 
-### Questão 2 — Espaço de Configuração (*C-Space*) e Inflação Assimétrica
-* **Resposta Esperada:** No **Espaço de Configuração (*C-Space*)**, inflar os obstáculos pelo raio de segurança do robô permite reduzi-lo matematicamente a um **ponto adimensional** durante a busca em grafo, garantindo que qualquer caminho livre encontrado no grid mantenha o corpo físico do robô afastado de colisões. A margem maior para **obstáculos suspensos** (`38 px` contra `30 px`) justifica-se pela **ergonomia e cinemática do conjunto robô-tutor**: embora o cão-robô seja baixo e passe sob galhos ou toldos, ele guia uma pessoa acoplada atrás de si pelo arnês. Como o tutor segue com inércia/atraso nas curvas e tem altura elevada, uma folga lateral maior evita que a cabeça do tutor colida com o obstáculo aéreo.
+ 1- Calcule esse limite em segundos com os valores do código (170 px de rua, 24 px de folga, 42 px de guia e 156 px/s de velocidade).
+ 2- Por que o semáforo tem fases “todos vermelhos” de 1,5 s? Que risco elas eliminam?
 
-### Questão 3 — Filtragem de Ruído em Sensores
-* **Resposta Esperada:** A **média móvel** é sensível a valores extremos (*outliers*): um único quadro com falha de retorno (*dropout* marcando `165 px`) ou ruído impulsivo puxa a média para cima e mascara um obstáculo próximo, atrasando a frenagem. O **filtro de mediana temporal** ordena as amostras recentes e seleciona o valor central, rejeitando completamente falhas isoladas de 1 quadro sem suavizar/borrar as transições bruscas de distância nas bordas dos obstáculos.
+5. Avaliação experimental
+Rode python dog_ia_v2.py --benchmark 20 --seed 1 e depois com --seed 7. Responda:
 
-### Questão 4 — Segurança Preditiva e Cinemática
-* **Resposta Esperada:** A **zona varrida (*swept volume*)** projeta o volume espacial que o veículo ocupará ao longo de um horizonte futuro $\Delta t$ (ex.: $1,0\text{ s}$), permitindo detectar interseções futuras com o robô ou o tutor e acionar a frenagem de emergência **antes** da colisão física. Para calculá-la, são indispensáveis a **posição atual**, o **vetor direção/sentido**, a **velocidade escalar ($v$)** e a dinâmica de frenagem do veículo ($d_{\text{freio}} = \frac{v^2}{2a}$).
+ 1- Informe taxa de sucesso, tempo médio, colisões e quase-colisões das duas execuções.
+ 2- Por que a seed fixa torna o experimento reproduzível, e por que ainda assim os resultados das duas seeds diferem?
+ 3- Proponha uma melhoria concreta (por exemplo, margem de segurança maior, outro filtro ou outro custo no A*) e diga qual métrica você esperaria que melhorasse e qual poderia piorar.
 
-### Questão 5 — Máquina de Estados Finitos (FSM) e Prevenção de *Deadlocks*
-* **Resposta Esperada:**
-  * **a) Prevenção de *Deadlock*:** O robô monitora o tempo contínuo em estado de evasão (`t_desvio`). Ao ultrapassar o limite (`3,5 s`), ele assume que está preso em um mínimo local ou diante de um bloqueio não mapeado e dispara o **replanejamento global**, invalidando a rota atual e recalculando um novo caminho A* a partir de sua posição corrente.
-  * **b) Fase *All-Red*:** Como veículos em movimento possuem inércia e distância de frenagem finita ($d = v^2 / 2a$), abrir o sinal de pedestres no instante exato em que o sinal veicular fecha faria com que carros já comprometidos com o cruzamento ou em desaceleração invadissem a faixa simultaneamente com o início da travessia. A fase *All-Red* garante a limpeza física da interseção antes de autorizar o avanço do robô.
+ 
+ *ETAPA BÔNUS - VALOR EXTRA DE MEIO PONTO PARA A PROVA SEMESTRAL.*
+
+1 - Grave um vídeo com a execução do seu código com o DOG-IA fazendo o percurso completo ida e volta. (deve durar entre 20 a 40 segundos)
+2 - Um dos integrantes do grupo deve fazer uma postagem no Linkedin e marcar todos os colegas e o professor (Flavio Santarelli no linkedin)
+3 - No texto deve-se se destacar o objetivo nobre do projeto e a motivação social que eles pensado
+4 - Enviar o link por email ao professor (flavio.santarelli@pro.fecaf.com.br) No corpo do email colocar o nome completo de todos os participantes do grupo.
+5 - Subir todos os códigos e perguntas para o github do grupo (coloque o link do github no email)

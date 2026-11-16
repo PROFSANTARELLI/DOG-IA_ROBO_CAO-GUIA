@@ -48,29 +48,29 @@
 ## 2. Máquina de estados
 Execute uma viagem completa (1 para Mercado) e observe o campo Estado no painel. Responda:
 
-# 1 - Liste, em ordem, os estados por que o robô passou e a condição que causou cada transição.
-# 2 - Qual é a diferença entre AGUARDANDO_SINAL e FREIO_EMERGENCIA?
+### 1 - Liste, em ordem, os estados por que o robô passou e a condição que causou cada transição.
+### 2 - Qual é a diferença entre AGUARDANDO_SINAL e FREIO_EMERGENCIA?
 
 
 ## 3. Percepção e ruído do sensor
 O LiDAR tem ruído gaussiano, falhas esporádicas (2%) e filtro de mediana sobre 3 varreduras. Responda:
 
-# 1 - Por que a mediana é mais adequada que a média para falhas do tipo “leitura = alcance máximo”?
-# 2 - Qual é o custo do filtro em termos de atraso na detecção? Estime-o em segundos, considerando 60 varreduras por segundo.
-# 3 - O que aconteceria se o filtro usasse 15 varreduras em vez de 3?
+### 1 - Por que a mediana é mais adequada que a média para falhas do tipo “leitura = alcance máximo”?
+### 2 - Qual é o custo do filtro em termos de atraso na detecção? Estime-o em segundos, considerando 60 varreduras por segundo.
+### 3 - O que aconteceria se o filtro usasse 15 varreduras em vez de 3?
 
 ## 4. Segurança temporal na travessia
 A travessia só começa se tempo_restante > (RUA_ALTURA + 24 + GUIA) / velocidade × 1,35 + 0,4. Responda:
 
-# 1- Calcule esse limite em segundos com os valores do código (170 px de rua, 24 px de folga, 42 px de guia e 156 px/s de velocidade).
-# 2- Por que o semáforo tem fases “todos vermelhos” de 1,5 s? Que risco elas eliminam?
+### 1- Calcule esse limite em segundos com os valores do código (170 px de rua, 24 px de folga, 42 px de guia e 156 px/s de velocidade).
+### 2- Por que o semáforo tem fases “todos vermelhos” de 1,5 s? Que risco elas eliminam?
 
 ## 5. Avaliação experimental
 Rode python dog_ia_v2.py --benchmark 20 --seed 1 e depois com --seed 7. Responda:
 
-# 1- Informe taxa de sucesso, tempo médio, colisões e quase-colisões das duas execuções.
-# 2- Por que a seed fixa torna o experimento reproduzível, e por que ainda assim os resultados das duas seeds diferem?
-# 3- Proponha uma melhoria concreta (por exemplo, margem de segurança maior, outro filtro ou outro custo no A*) e diga qual métrica você esperaria que melhorasse e qual poderia piorar.
+### 1- Informe taxa de sucesso, tempo médio, colisões e quase-colisões das duas execuções.
+### 2- Por que a seed fixa torna o experimento reproduzível, e por que ainda assim os resultados das duas seeds diferem?
+### 3- Proponha uma melhoria concreta (por exemplo, margem de segurança maior, outro filtro ou outro custo no A*) e diga qual métrica você esperaria que melhorasse e qual poderia piorar.
 
  
 ### ETAPA BÔNUS - VALOR EXTRA DE MEIO PONTO PARA A PROVA SEMESTRAL.*
